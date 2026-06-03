@@ -96,6 +96,42 @@ https://www.youtube.com/playlist?list=PLoROMvodv4rMqXOcazWaTUHhq-yembLCV
 - scaling recipe (FLOPs -> hyperparameter budget)
 - D (model params) = 20N (token count)
 
+### data
+- better data = better model
+- metrics
+  - perplexity (private documents, not on the internet, avoids contamination)
+  - benchmark (mostly public)
+
+### data curation
+- scraping + crawling
+
+### data processing
+- transformation
+- filtering
+- deduplication
+- weighted data
+- synthetic data
+- types: pre-training, mid-training, post-training (SFT).
+
+### alignment
+- generate response then grade
+- RL algo: PPO, GRPO, DPO (preference data)
+  - unstable, hard to tune
+- lots of infra requirements
+
+---
+
+### tokenization
+- encode string -> token, decode token -> string
+- [tokenization demo](https://tiktokenizer.vercel.app/?encoder=gpt2)
+- compression ratio (high better, attention is quadratic but higher leads to sparsity)
+- types
+  - character level (massive vocab size)
+  - byte level (compression ratio = 1, vocab size is small)
+  - word level (compression ratio is better, vocab is unbounded)
+  - byte pair level (train tokenizer, common sequences have shorter tokens, byte pair and merge recursively)
+  - unk token messes up perplexity
+
 ## 02 - [Stanford CS336 Language Modeling from Scratch | Spring 2026 | Lecture 2: PyTorch (einops)](https://www.youtube.com/watch?v=kuYAsz7zspQ&list=PLoROMvodv4rMqXOcazWaTUHhq-yembLCV)
 
 ## 03 - [Stanford CS336 Language Modeling from Scratch | Spring 2026 | Lecture 3: Architectures](https://www.youtube.com/watch?v=lVynu4bo1rY&list=PLoROMvodv4rMqXOcazWaTUHhq-yembLCV)
