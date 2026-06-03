@@ -58,7 +58,7 @@ https://www.youtube.com/playlist?list=PLoROMvodv4rMqXOcazWaTUHhq-yembLCV
   - activation functions
   - positional encoding
   - normalization
-  - attention (expensive $\mathcal{O}(n^2)$)
+  - attention (expensive $\mathcal{O}(n^2)$ )
   - linear attention (?)
   - MLP with MoE
   - architecture
