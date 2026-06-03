@@ -2,6 +2,25 @@
 
 https://www.youtube.com/playlist?list=PLoROMvodv4rMqXOcazWaTUHhq-yembLCV
 
+## Index
+
+- [01 - Stanford CS336 Language Modeling from Scratch | Spring 2026 | Lecture 1: Overview, Tokenization](#01---stanford-cs336-language-modeling-from-scratch--spring-2026--lecture-1-overview-tokenization)
+- [02 - Stanford CS336 Language Modeling from Scratch | Spring 2026 | Lecture 2: PyTorch (einops)](#02---stanford-cs336-language-modeling-from-scratch--spring-2026--lecture-2-pytorch-einops)
+- [03 - Stanford CS336 Language Modeling from Scratch | Spring 2026 | Lecture 3: Architectures](#03---stanford-cs336-language-modeling-from-scratch--spring-2026--lecture-3-architectures)
+- [04 - Stanford CS336 Language Modeling from Scratch | Spring 2026 | Lecture 4: Attention Alternatives](#04---stanford-cs336-language-modeling-from-scratch--spring-2026--lecture-4-attention-alternatives)
+- [05 - Stanford CS336 Language Modeling from Scratch | Spring 2026 | Lecture 5: GPUs, TPUs](#05---stanford-cs336-language-modeling-from-scratch--spring-2026--lecture-5-gpus-tpus)
+- [06 - Stanford CS336 Language Modeling from Scratch | Spring 2026 | Lecture 6: Kernels, Triton, XLA](#06---stanford-cs336-language-modeling-from-scratch--spring-2026--lecture-6-kernels-triton-xla)
+- [07 - Stanford CS336 Language Modeling from Scratch | Spring 2026 | Lecture 7: Parallelism](#07---stanford-cs336-language-modeling-from-scratch--spring-2026--lecture-7-parallelism)
+- [08 - Stanford CS336 Language Modeling from Scratch | Spring 2026 | Lecture 8: Parallelism](#08---stanford-cs336-language-modeling-from-scratch--spring-2026--lecture-8-parallelism)
+- [09 - Stanford CS336 Language Modeling from Scratch | Spring 2026 | Lecture 9: Scaling Laws](#09---stanford-cs336-language-modeling-from-scratch--spring-2026--lecture-9-scaling-laws)
+- [10 - Stanford CS336 Language Modeling from Scratch | Spring 2026 | Lecture 10: Inference](#10---stanford-cs336-language-modeling-from-scratch--spring-2026--lecture-10-inference)
+- [11 - Stanford CS336 Language Modeling from Scratch | Spring 2026 | Lecture 11:  Scaling Laws](#11---stanford-cs336-language-modeling-from-scratch--spring-2026--lecture-11--scaling-laws)
+- [12 - Stanford CS336 Language Modeling from Scratch | Spring 2026 | Lecture 12: Evaluation](#12---stanford-cs336-language-modeling-from-scratch--spring-2026--lecture-12-evaluation)
+- [13 - Stanford CS336 Language Modeling from Scratch | Spring 2026 | Lecture 13: Data (Sources, Datasets)](#13---stanford-cs336-language-modeling-from-scratch--spring-2026--lecture-13-data-sources-datasets)
+- [14 - Stanford CS336 Language Modeling from Scratch | Spring 2026 | Lecture 14: Data](#14---stanford-cs336-language-modeling-from-scratch--spring-2026--lecture-14-data)
+- [15 - Stanford CS336 Language Modeling from Scratch | Spring 2026 | Lecture 15: Mid/Post-Training](#15---stanford-cs336-language-modeling-from-scratch--spring-2026--lecture-15-midpost-training)
+- [16 - Stanford CS336 Language Modeling from Scratch | Spring 2026 | Lecture 16: Post-Training - RLVR](#16---stanford-cs336-language-modeling-from-scratch--spring-2026--lecture-16-post-training---rlvr)
+
 ## 01 - [Stanford CS336 Language Modeling from Scratch | Spring 2026 | Lecture 1: Overview, Tokenization](https://www.youtube.com/watch?v=JuoVZkPBiKk&list=PLoROMvodv4rMqXOcazWaTUHhq-yembLCV)
 
 ### pre NNs
@@ -57,7 +76,25 @@ https://www.youtube.com/playlist?list=PLoROMvodv4rMqXOcazWaTUHhq-yembLCV
 
 ### kernel
 - function running on gpu
-### - target: minimize data movement
+- target: minimize data movement
+
+### parallelism
+- sharding
+- splits
+
+### inference
+- RL-HF
+- eval
+- phases: prefill -> decode
+  - prefill: feed tokens to fill kv cache
+  - decode: generate 1 token at a time (memory bound)
+- faster: small model, speculative decoding, fused kernel, continuous batching
+
+### scaling laws
+- what to focus on?
+- can't do hyperparameter tuning due to scale
+- scaling recipe (FLOPs -> hyperparameter budget)
+- D (model params) = 20N (token count)
 
 ## 02 - [Stanford CS336 Language Modeling from Scratch | Spring 2026 | Lecture 2: PyTorch (einops)](https://www.youtube.com/watch?v=kuYAsz7zspQ&list=PLoROMvodv4rMqXOcazWaTUHhq-yembLCV)
 
