@@ -134,6 +134,36 @@ https://www.youtube.com/playlist?list=PLoROMvodv4rMqXOcazWaTUHhq-yembLCV
 
 ## 02 - [Stanford CS336 Language Modeling from Scratch | Spring 2026 | Lecture 2: PyTorch (einops)](https://www.youtube.com/watch?v=kuYAsz7zspQ&list=PLoROMvodv4rMqXOcazWaTUHhq-yembLCV)
 
+### resource accounting
+
+#### tensors
+- building blocks
+- FP32 (1 sign, 8 exp, 23 fraction)
+  - IEEE 754
+  - "single precision"
+  - FP32 is still heavy for ML
+  - torch default is float 32
+  - 4 bytes per tensor
+- FP16 (1 sign, 5 exp, 10 fraction)
+  - low dynamic range
+  - overflow and underflow!
+- bfloat16 (1 sign, 8 exp, 7 fration)
+  - brain floating point (2018)
+  - same dynamic range as FP32 but less precise
+  - 2 bytes per tensor
+- fp32 works but requires lots of memory
+- fp8, fp16 and even bfloat16 is risky (instability)
+- mixed precision training
+  - bf16 for parameters, activation, gradients
+  - fp32 for optimizer states (?)
+  - pytorch AMP library (automatically casts when safe)
+- fp8
+  - E4M3 (higher dynamic range)
+  - E5M2 (higher precision)
+- fp4
+  - Nemotron 3 used this (NVFP4)
+  - blocks can be scaled up and down to increase range
+
 ## 03 - [Stanford CS336 Language Modeling from Scratch | Spring 2026 | Lecture 3: Architectures](https://www.youtube.com/watch?v=lVynu4bo1rY&list=PLoROMvodv4rMqXOcazWaTUHhq-yembLCV)
 
 ## 04 - [Stanford CS336 Language Modeling from Scratch | Spring 2026 | Lecture 4: Attention Alternatives](https://www.youtube.com/watch?v=cKSwj_qZ8Jg&list=PLoROMvodv4rMqXOcazWaTUHhq-yembLCV)
