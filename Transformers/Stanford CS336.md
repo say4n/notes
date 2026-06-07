@@ -261,6 +261,16 @@ https://www.youtube.com/playlist?list=PLoROMvodv4rMqXOcazWaTUHhq-yembLCV
   - training scenario
 
 ### roofline plots
+- realized FLOPs/s v/s arithmetic intensity
+
+### deep network
+- input: B x D
+- L layers: repeat(D x D matmul -> B x D ReLU)
+- bytes = $L \times (4BD + 2D^2 + 4BD)$
+- flops = $L \times (2BD^2 + BD)$
+
+#### gradient flops
+- forward
 
 ## 03 - [Stanford CS336 Language Modeling from Scratch | Spring 2026 | Lecture 3: Architectures](https://www.youtube.com/watch?v=lVynu4bo1rY&list=PLoROMvodv4rMqXOcazWaTUHhq-yembLCV)
 
