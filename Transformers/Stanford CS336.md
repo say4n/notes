@@ -269,8 +269,48 @@ https://www.youtube.com/playlist?list=PLoROMvodv4rMqXOcazWaTUHhq-yembLCV
 - bytes = $L \times (4BD + 2D^2 + 4BD)$
 - flops = $L \times (2BD^2 + BD)$
 
-#### gradient flops
-- forward
+#### gradient flops (per layer w/o activation)
+- h1 -> w2 -> h2
+- forward flops =  $2BD^2$
+- backward
+  - h2.grad = $\frac{d \text{loss}} {d h_2}$
+  - h1.grad = $\frac{d \text{loss}} {d h_1}$ = h2.grad x w2
+  - w2.grad = $\frac{d \text{loss}} {d w_2}$ = h2.grad x h1
+  - flops = $2BD^2 + 2BD^2$ = 2x forward flops
+    - 2: gradient with param + gradient with input
+
+#### all together
+- forward: 2 x # data point * # parameters
+- backward: 4 x # data point * # parameters
+- total: 6 x # data point * # parameters
+- for MLPs ^ but also a good approximation for transformers (as long as context length isn't too large)
+
+#### optimizer
+- optimizer state per parameter
+- parameter memory: 2 x (D x D x L) (bf16)
+- activation memory: 2 x (B x D x L) (bf16)
+- gradient memory: 2 x number of parameters (bf16)
+- optimizer state: 4 x number of parameters (fp32)
+  - for stability this is fp32
+  - adam uses 8 bytes per parameter
+  - adagrad uses 4 bytes per parameter
+
+#### compute for one step
+- num parameter: D x D x L
+- flops: 6 x B x num_parameters
+
+### reducing memory usage
+
+#### gradient accumulation
+- large batch size to improve stability
+- compute gradient on micro batches, accumulate then update
+
+#### activation checkpointing
+- training: store activations of all layers
+- inference: no gradient, only current layer activation
+- also known as gradient checkpointing
+- recompute missing activation from last checkpoint
+- tradeoff: compute activation again v/s store in memory
 
 ## 03 - [Stanford CS336 Language Modeling from Scratch | Spring 2026 | Lecture 3: Architectures](https://www.youtube.com/watch?v=lVynu4bo1rY&list=PLoROMvodv4rMqXOcazWaTUHhq-yembLCV)
 
