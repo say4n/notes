@@ -218,6 +218,50 @@ https://www.youtube.com/playlist?list=PLoROMvodv4rMqXOcazWaTUHhq-yembLCV
 - MFU: actual FLOP/s / promised FLOP/s
 - MFU >= 0.5 is good, more matmuls is better
 
+### arithmetic intensity
+- HBM -> accelerator -> HBM
+  - accelerator FLOP/s
+  - HBM bandwidth (bytes/s)
+    - H100: 3.35e12
+- ReLU
+  - n: 1024 * 1024, bf16
+  - element-wise max(element, 0)
+  - bytes = $2 \times n + 2 \times n$ (read & write)
+  - flops = n
+  - `communication_time = bytes / bytes_per_sec`
+  - `computation_time = flops / flops_per_sec`
+  - `total_time = max(communication_time, computation_time)` with overlapped communication and computation.
+  - memory bound: communication > compute
+  - compute bound: compute > communication
+- accelerator_intensity: flops_per_sec / bytes_per_sec
+- arithmetic_intensity: flops / bytes
+- memory bound: arithmetic_intensity < accelerator_intensity
+- compute bound: arithmetic_intensity > accelerator_intensity
+- GeLU
+  - bytes = $2 \times n + 2 \times n$ (read & write)
+  - flops = $20 \times n$
+  - still memory bound
+- dot product
+  - x: n dim, y: n dim, z: x @ y
+  - bytes: $2 \times n + 2 \times n + 2$
+  - flops = $ 2 \times n - 1$
+  - arithmetic_intensity = $\frac{2 \times n - 1}{2 \times n + 2 \times n + 2} \approx 0.5$
+  - still memory bound
+- matrix vector product
+  - bytes = $ 2 \times n^2 + 4 \times n$
+  - flops = $ 2 \times n ^ 2$
+  - arithmetic_intensity $\approx 1$
+  - still memory bound
+  - inference scenario
+- matrix multiplication
+  - bytes = $ 6 \times n^2 $
+  - flops = $ 2 \times n ^ 3$
+  - arithmetic_intensity $\approx \frac{n}{3}$
+  - compute bound based on $n$
+  - training scenario
+
+### roofline plots
+
 ## 03 - [Stanford CS336 Language Modeling from Scratch | Spring 2026 | Lecture 3: Architectures](https://www.youtube.com/watch?v=lVynu4bo1rY&list=PLoROMvodv4rMqXOcazWaTUHhq-yembLCV)
 
 ## 04 - [Stanford CS336 Language Modeling from Scratch | Spring 2026 | Lecture 4: Attention Alternatives](https://www.youtube.com/watch?v=cKSwj_qZ8Jg&list=PLoROMvodv4rMqXOcazWaTUHhq-yembLCV)
