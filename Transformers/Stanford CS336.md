@@ -134,9 +134,7 @@ https://www.youtube.com/playlist?list=PLoROMvodv4rMqXOcazWaTUHhq-yembLCV
 
 ## 02 - [Stanford CS336 Language Modeling from Scratch | Spring 2026 | Lecture 2: PyTorch (einops)](https://www.youtube.com/watch?v=kuYAsz7zspQ&list=PLoROMvodv4rMqXOcazWaTUHhq-yembLCV)
 
-### resource accounting
-
-#### tensors
+### tensors
 - building blocks
 - FP32 (1 sign, 8 exp, 23 fraction)
   - IEEE 754
@@ -163,6 +161,62 @@ https://www.youtube.com/playlist?list=PLoROMvodv4rMqXOcazWaTUHhq-yembLCV
 - fp4
   - Nemotron 3 used this (NVFP4)
   - blocks can be scaled up and down to increase range
+- quantization is easier that training with lower bits
+
+### tensor einops
+- motivation: indexing is confusing, named dimensions are easier to follow
+
+#### einsum
+- generalised matmul with better bookkeeping
+- example 1:
+  - x: 3 x 4, y: 4 x 3
+  - old: `z = x @ y`
+  - einops: `z = einsum(x, y, "seq1 hidden, hidden seq2 -> seq1 seq2")`
+- example 2:
+  - x: 2 x 3 x 4, y: 2 x 3 x 4
+  - old: `z = x * y.transpose(-2, -1)`
+  - einops: `z = einsum(x, y, "batch seq1 hidden, batch seq2 hidden -> batch seq1 seq2")`, wow!
+  - einops: `z = einsum(x, y, "... seq1 hidden, ... seq2 hidden -> ... seq1 seq2")`, `...` is broadcasting over any number of dims
+
+#### reduce
+- example:
+  - x: 2 x 3 x 4
+  - old: `y = x.sum(dim=-1)`
+  - einops: `y = reduce(x, "... hidden -> ...", "sum")`
+
+#### rearrange
+- example:
+  - x: 3 x 8
+  - w: 4 x 4
+  - `x = rearrange(x, "... (heads hidden1) -> ... heads hidden1", heads=2)`
+  - `x = einsum(x, w, "... hidden1, hidden1 hidden2 -> ... hidden2")`
+  - `x = rearrange(x, "... heads hidden2 -> (heads hidden2)")`
+
+### tensor flops
+- FLOPs (number) v/s FLOP/s (how fast, also FLOPS)
+- models
+  - GPT3: 3.14e23 FLOPs
+  - GPT4: 2e25 FLOPs
+- H100 GPU: 1979 TFLOP/s with sparsity, 50% without.
+
+### linear model
+- b points, d dim each, maps from d dim to k dim outputs
+- `x = torch.ones(B, D)`
+- `w = torch.randn(D, K)`
+- `y = x @ w`
+- matmul FLOPs: $2 \times B \times D \times K$
+- element wise FLOPs: $N$ for N elements
+- additions FLOPs for MxN matrices: $M \times N$
+- generalizing:
+  - B: # of data points
+  - D K: # of parameters
+  - FLOPs: 2 x # tokens x # parameters (for transformers)
+- CUDA synchronize for benchmarking
+  - what does this do?
+
+### model FLOPs utilization
+- MFU: actual FLOP/s / promised FLOP/s
+- MFU >= 0.5 is good, more matmuls is better
 
 ## 03 - [Stanford CS336 Language Modeling from Scratch | Spring 2026 | Lecture 3: Architectures](https://www.youtube.com/watch?v=lVynu4bo1rY&list=PLoROMvodv4rMqXOcazWaTUHhq-yembLCV)
 
